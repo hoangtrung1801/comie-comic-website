@@ -12,7 +12,7 @@ const Layout: React.FC<LayoutProps> = ({children}) => {
   return (
     <Flex minH='100vh' flexDirection='column'>
       <Navigation />
-      <Container maxW='container.xl' flexGrow={1} >
+      <Container maxW='container.xl' flexGrow={1} my='2rem'>
         {children}
       </Container>
       <Footer />

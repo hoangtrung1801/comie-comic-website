@@ -9,13 +9,13 @@ interface NavigationProps {
 const Navigation: React.FC<NavigationProps> = () => {
 
   return (
-    <Box bgColor="gray.700">
+    <Box boxShadow='lg'>
       <Container maxW="container.xl" h="70px" display='flex' alignItems='center'>
-        <Heading>
+        <Text fontSize='3xl' fontWeight='bold'>
           <Link href='/'>
             <LinkChakra _hover={{textDecor: 'none'}}>COMIE</LinkChakra>
           </Link>
-        </Heading>
+        </Text>
       </Container>
     </Box>
   );

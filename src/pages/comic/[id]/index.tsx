@@ -1,26 +1,29 @@
 import { AspectRatio, Box, Button, Heading, HStack, Image, Table, TableCaption, TableContainer, Tbody, Td, Text, Tfoot, Th, Thead, Tr, VStack } from '@chakra-ui/react';
+import { GetServerSideProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
+import { Comic } from '../../../types/Comic';
+import { getComic } from '../../../utils/api/comic';
 
-interface ComicProps {}
+interface ComicProps {
+  comic: Comic
+}
 
-export default function Comic({}: ComicProps) {
-  const router = useRouter();
-
+const Comic: NextPage<ComicProps> = ({comic}) => {
   return (
     <VStack align='flex-start' spacing={8}>
       <HStack align='flex-start' spacing={4}>
         <Box>
           <AspectRatio ratio={3/4} w='300px'>
-            <Image src={`https://picsum.photos/id/${Math.floor(Math.random() * 300)}/300/400`} />
+            <Image src={comic.imageSrc} />
           </AspectRatio>
         </Box>
 
         <VStack align='flex-start' fontSize='lg' p='2rem 1rem'>
-          <Text>Title: title</Text>
-          <Text>Author: author</Text>
-          <Text>Status: status</Text>
-          <Text>Type: type</Text>
+          <Text>Title: {comic.title}</Text>
+          <Text>Author: {comic.author}</Text>
+          <Text>Status: {comic.status}</Text>
+          <Text>Type: </Text>
           <HStack>
             <Button>First read</Button>
             <Button>Read the last</Button>
@@ -62,3 +65,15 @@ export default function Comic({}: ComicProps) {
     </VStack>
   )
 }
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const comic = await getComic(context.query.id.toString());
+
+  return {
+    props: {
+      comic
+    }
+  }
+}
+
+export default Comic;

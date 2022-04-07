@@ -1,8 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Box, Heading, HStack, SimpleGrid, VStack } from "@chakra-ui/react"
 import ComicCard from '../components/ComicCard';
+import { getHome } from '../utils/api/home';
+import { GetServerSideProps, GetStaticProps, NextPage } from 'next';
 
-const Index: React.FC = () => {
+const Index: NextPage<{data: any}> = ({data}) => {
+
+  useEffect(() => {
+    console.log(data);
+  }, []);
 
   return (
     <VStack>
@@ -12,11 +18,9 @@ const Index: React.FC = () => {
           <Heading as='h3' >Truyện đề xuất</Heading>
           <SimpleGrid columns={5} w='full' spacing={3}>
             {
-              Array(10)
-                .fill(0)
-                .map((_, i) => (
-                  <ComicCard key={i} />
-                ))
+              data.mostView.map((comic, i) => (
+                <ComicCard key={i} comic={comic} />
+              ))
             }
           </SimpleGrid>
         </VStack>
@@ -26,11 +30,9 @@ const Index: React.FC = () => {
           <Heading as='h3'>Truyện mới cập nhật</Heading>
           <SimpleGrid columns={5} w='full' spacing={3}>
             {
-              Array(10)
-                .fill(0)
-                .map((_, i) => (
-                  <ComicCard key={i} />
-                ))
+              data.lastUpdate.map((comic, i) => (
+                <ComicCard key={i} comic={comic} />
+              ))
             }
           </SimpleGrid>
           </VStack>
@@ -39,5 +41,26 @@ const Index: React.FC = () => {
     </VStack>
   )
 }
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const data = await getHome();
+
+  return {
+    props: {
+      data
+    },
+  }
+}
+
+// export const getStaticProps: GetStaticProps = async () => {
+//   const data = await getHome();
+
+//   return {
+//     props: {
+//       data
+//     },
+//     revalidate: 120
+//   }
+// }
 
 export default Index

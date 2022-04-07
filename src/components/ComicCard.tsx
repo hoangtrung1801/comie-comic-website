@@ -1,19 +1,13 @@
 import { AspectRatio, Box, Flex, Image, LinkOverlay, Text } from '@chakra-ui/react';
 import React from 'react';
+import { Comic } from '../types/Comic';
 
-const data = {
-  isNew: true,
-  imageURL:
-    'https://picsum.photos/300/400',
-  name: 'Wayfarer Classic',
-  price: 4.5,
-  rating: 4.2,
-  numReviews: 34,
-};
+interface ComicCardProps {
+  comic: Comic
+}
 
-interface ComicCardProps {}
-
-export default function ComicCard({} : ComicCardProps) {
+export default function ComicCard({comic} : ComicCardProps) {
+  console.log(comic);
 
   return (
     <Flex w="full" direction="column">
@@ -26,14 +20,15 @@ export default function ComicCard({} : ComicCardProps) {
         overflow='hidden'
       >
         <Box>
-          <LinkOverlay href='#' />
+          <LinkOverlay href={`/comic/${comic.id}`} />
           <AspectRatio ratio={3 / 4} w="full">
-            <Image src={`https://picsum.photos/id/${Math.floor(Math.random() * 300)}/300/400`} />
+            {/* <Image src={`https://picsum.photos/id/${Math.floor(Math.random() * 300)}/300/400`} /> */}
+            <Image src={comic.imageSrc} />
           </AspectRatio>
         </Box>
         <Box py='4px'>
           <Text textAlign="center" fontWeight='semibold' lineHeight='tall'>
-            {data.name}
+            {comic.title}
           </Text>
         </Box>
       </Box>

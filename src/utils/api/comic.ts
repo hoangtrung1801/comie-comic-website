@@ -15,7 +15,15 @@ const getComic = async (id: string): Promise<any> => {
       author: comic?.querySelector('.author').querySelector('p:nth-child(2)').textContent,
       status: comic?.querySelector('.status').querySelector('p:nth-child(2)').textContent,
       categories: comic?.querySelector('.kind').querySelector('.col-xs-8').querySelectorAll('a').map(item => item.textContent),
-      chapters: []
+      description: comic?.querySelector('.detail-content p').textContent,
+      chapters: comic?.querySelectorAll('.list-chapter ul li').map(item => { 
+        const chapterId = parseInt(item.querySelector('.chapter a').textContent.split(' ')[1]);
+        return {
+          chapterId,
+          updateAt: item.querySelector('div:nth-child(2)').textContent,
+          href: `/comic/${id}/${chapterId}`
+        }
+      })
     }
   } catch(e) {
     console.log(e);

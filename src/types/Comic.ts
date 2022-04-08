@@ -5,8 +5,10 @@ export interface Comic {
   author: string,
   status: string,
   categories:  string[],
+  description: string,
   chapters : {
-    chapterId: string,
+    chapterId: number,
     updateAt: string,
+    href: string
   }[]
 }

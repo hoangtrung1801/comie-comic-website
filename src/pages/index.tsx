@@ -6,10 +6,6 @@ import { GetServerSideProps, GetStaticProps, NextPage } from 'next';
 
 const Index: NextPage<{data: any}> = ({data}) => {
 
-  useEffect(() => {
-    console.log(data);
-  }, []);
-
   return (
     <VStack>
       <Box w='full' color='whiteAlpha.800'>

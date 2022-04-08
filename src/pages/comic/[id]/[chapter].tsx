@@ -1,12 +1,14 @@
 import { ArrowLeftIcon, ArrowRightIcon } from "@chakra-ui/icons";
 import { Box, Heading, Link, chakra, VStack, HStack, Button, Select } from "@chakra-ui/react";
+import { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router";
 import React from "react";
 
 interface ChapterProps {}
 
-export default function Chapter({}: ChapterProps) {
+const Chapter: NextPage<ChapterProps> = ({}) => {
   const router = useRouter();
+  const {chapter} = router.query;
 
   return (
     <VStack>
@@ -20,7 +22,7 @@ export default function Chapter({}: ChapterProps) {
               Title comic
             </chakra.span>{" "}
           </Link>
-          - Chapter 1
+          - Chapter {chapter} 
         </Heading>
       </Box>
       
@@ -40,3 +42,14 @@ export default function Chapter({}: ChapterProps) {
     </VStack>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async () => {
+
+  return {
+    props: {
+
+    }
+  }
+}
+
+export default Chapter;

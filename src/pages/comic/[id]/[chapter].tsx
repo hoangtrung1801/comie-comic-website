@@ -1,14 +1,16 @@
 import { ArrowLeftIcon, ArrowRightIcon } from "@chakra-ui/icons";
-import { Box, Heading, Link, chakra, VStack, HStack, Button, Select } from "@chakra-ui/react";
+import { Box, Heading, Link, chakra, VStack, HStack, Button, Select, Image } from "@chakra-ui/react";
 import { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router";
 import React from "react";
+import { Chapter } from "../../../types/Chapter";
+import { getChapter } from "../../../utils/api/chapter";
 
-interface ChapterProps {}
+interface ChapterProps {
+  chapter: Chapter
+}
 
-const Chapter: NextPage<ChapterProps> = ({}) => {
-  const router = useRouter();
-  const {chapter} = router.query;
+const Chapter: NextPage<ChapterProps> = ({chapter}) => {
 
   return (
     <VStack>
@@ -19,10 +21,10 @@ const Chapter: NextPage<ChapterProps> = ({}) => {
             _hover={{ textDecor: "none" }}
           >
             <chakra.span color="#6c5ce7" _hover={{ color: "#a29bfe" }}>
-              Title comic
+              Title {chapter.title} 
             </chakra.span>{" "}
           </Link>
-          - Chapter {chapter} 
+          - Chapter {chapter.chap} 
         </Heading>
       </Box>
       
@@ -33,21 +35,31 @@ const Chapter: NextPage<ChapterProps> = ({}) => {
             Array(20)
               .fill(0)
               .map((_, i) => (
-                <option key={i} value={i+1}>Chapter {i+1}</option>
+                <option key={i} value={i+1} selected={chapter.chap == i+1 ? true : false}>Chapter {i+1}</option>
               ))
           }
         </Select>
         <Button><ArrowRightIcon /></Button>
       </HStack>
+
+      <VStack> 
+        {
+          chapter.images.map((img, i) => (
+            <Image src={img} key={img} />
+          ))
+        }
+      </VStack>
     </VStack>
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const {id: comicId, chapter: chapterId } = context.query;
+  const chapter: Chapter = await getChapter(comicId.toString(), parseInt(chapterId.toString()));
 
   return {
     props: {
-
+      chapter
     }
   }
 }

@@ -1,7 +1,8 @@
 import axios from 'axios';
+import { API_URL } from './constant';
 
 const instance = axios.create({
-  baseURL: 'http://www.nettruyenmoi.com'
+  baseURL: API_URL
 })
 
 export default instance;

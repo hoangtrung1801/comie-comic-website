@@ -1,4 +1,4 @@
-import { AspectRatio, Box, Flex, Image, LinkOverlay, Text } from '@chakra-ui/react';
+import { AspectRatio, Box, Flex, Heading, Image, LinkOverlay, Text } from '@chakra-ui/react';
 import React from 'react';
 import { Comic } from '../types/Comic';
 
@@ -7,14 +7,14 @@ interface ComicCardProps {
 }
 
 export default function ComicCard({comic} : ComicCardProps) {
-  console.log(comic);
-
   return (
-    <Flex w="full" direction="column">
-      <Box
+    <Box w="full" h='full'>
+      <Flex
         position='relative'
+        direction='column'
         w='full'
-        rounded='lg'
+        h='full'
+        rounded='sm'
         shadow='lg'
         bg='gray.700'
         overflow='hidden'
@@ -26,12 +26,12 @@ export default function ComicCard({comic} : ComicCardProps) {
             <Image src={comic.imageSrc} />
           </AspectRatio>
         </Box>
-        <Box py='4px'>
-          <Text textAlign="center" fontWeight='semibold' lineHeight='tall'>
+        <Box p='0.75rem'>
+          <Heading noOfLines={2} size={'sm'} fontWeight='semibold' lineHeight='tall'>
             {comic.title}
-          </Text>
+          </Heading>
         </Box>
-      </Box>
-    </Flex>
+      </Flex>
+    </Box>
   );
 }

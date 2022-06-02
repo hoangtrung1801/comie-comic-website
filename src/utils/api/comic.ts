@@ -16,7 +16,7 @@ const getComic = async (id: string): Promise<any> => {
       status: comic?.querySelector('.status').querySelector('p:nth-child(2)').textContent,
       categories: comic?.querySelector('.kind').querySelector('.col-xs-8').querySelectorAll('a').map(item => item.textContent),
       description: comic?.querySelector('.detail-content p').textContent,
-      chapters: comic?.querySelectorAll('.list-chapter ul li').map(item => { 
+      chapters: comic?.querySelectorAll('.list-chapter ul li').map(item => {
         const chapterId = parseInt(item.querySelector('.chapter a').textContent.split(' ')[1]);
         return {
           chapterId,
@@ -26,7 +26,7 @@ const getComic = async (id: string): Promise<any> => {
       })
     }
   } catch(e) {
-    console.log(e);
+    throw e;
   }
 }
 

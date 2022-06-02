@@ -12,6 +12,7 @@ const Index: NextPage<{data: any}> = ({data}) => {
         {/* Truyen de xuat */}
         <VStack spacing={4} align='flex-start' mb='3rem' >
           <Heading as='h3' >Truyện đề xuất</Heading>
+
           <SimpleGrid columns={5} w='full' spacing={3}>
             {
               data.mostView.map((comic, i) => (

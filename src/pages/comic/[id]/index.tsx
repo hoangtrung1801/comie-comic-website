@@ -2,17 +2,16 @@ import {
     AspectRatio,
     Box,
     Button,
+    Flex,
     Heading,
     HStack,
     Image,
     LinkOverlay,
     Table,
-    TableCaption,
     TableContainer,
     Tbody,
     Td,
     Text,
-    Tfoot,
     Th,
     Thead,
     Tr,
@@ -20,9 +19,7 @@ import {
 } from "@chakra-ui/react";
 import { GetServerSideProps, NextPage } from "next";
 import Link from "next/link";
-import { useRouter } from "next/router";
-import React, { useEffect } from "react";
-import { Comic } from "../../../types/Comic";
+import Comic from "../../../types/Comic";
 import { getComic } from "../../../utils/api/comic";
 
 interface ComicProps {
@@ -30,49 +27,61 @@ interface ComicProps {
 }
 
 const Comic: NextPage<ComicProps> = ({ comic }) => {
-    console.log(comic);
     return (
-        <VStack align="flex-start" spacing={8}>
-            <HStack align="flex-start" spacing={4}>
+        <VStack align="flex-start" spacing={12}>
+            <HStack spacing={4} align="stretch">
                 <Box>
-                    <AspectRatio ratio={3 / 4} w="300px">
+                    <AspectRatio
+                        ratio={3 / 4}
+                        w={60}
+                        rounded={"md"}
+                        overflow="hidden"
+                    >
                         <Image src={comic.imageSrc} />
                     </AspectRatio>
                 </Box>
 
-                <VStack align="flex-start" fontSize="lg" p="2rem 1rem">
-                    <Text>Title: {comic.title}</Text>
-                    <Text>Author: {comic.author}</Text>
-                    <Text>Status: {comic.status}</Text>
-                    <Text>Type: </Text>
-                    <HStack>
-                        <Button>
-                            <Link href={comic.chapters[comic.chapters.length-1].href}>
-                                First read
-                            </Link>
-                        </Button>
-                        <Button>
-                            <Link href={comic.chapters[0].href}>
-                                Read the last
-                            </Link>
-                        </Button>
+                <VStack align="start" spacing={4}>
+                    <Heading>{comic.title}</Heading>
+                    <VStack spacing={"2"} align="flex-start" color="gray.400">
+                        <Text>Sáng tác bởi {comic.author}</Text>
+                        {/* <Text>{comic.status}</Text> */}
+                        <Text>{comic.categories.join(" • ")}</Text>
+                    </VStack>
+                    <HStack flexGrow={1} align="end">
+                        <Link
+                            href={
+                                comic.chapters[comic.chapters.length - 1].href
+                            }
+                        >
+                            <Button variant="type1">Đọc ngay</Button>
+                        </Link>
+                        <Link href={comic.chapters[0].href}>
+                            <Button variant="type1">Chương mới nhất</Button>
+                        </Link>
                     </HStack>
                 </VStack>
             </HStack>
 
             <VStack align="flex-start">
-                <Heading as="h2">Content</Heading>
-                <Text>{comic.description}</Text>
+                {/* <Heading variant={"title"}>Nội dung</Heading> */}
+                <Heading as="h2" size="lg">
+                    Nội dung
+                </Heading>
+                <Text color="gray.400">{comic.description}</Text>
             </VStack>
 
             <VStack align="flex-start" w="full">
-                <Heading as="h2">Chapter</Heading>
-                <TableContainer w="full">
+                {/* <Heading variant={"title"}>Chương</Heading> */}
+                <Heading as="h2" size="lg">
+                    Danh sách chương
+                </Heading>
+                <TableContainer w="full" maxH={"100vh"} overflowY="auto">
                     <Table variant="simple">
                         <Thead>
                             <Tr>
-                                <Th>Chapter</Th>
-                                <Th w="25%">Date</Th>
+                                <Th>Chương</Th>
+                                <Th w="25%">Ngày ra mắt</Th>
                             </Tr>
                         </Thead>
                         <Tbody>
@@ -86,7 +95,7 @@ const Comic: NextPage<ComicProps> = ({ comic }) => {
                                     <Td position="relative">
                                         <Link href={chap.href}>
                                             <LinkOverlay>
-                                                Chapter {chap.chapterId}
+                                                Chương {chap.chapterId}
                                             </LinkOverlay>
                                         </Link>
                                     </Td>

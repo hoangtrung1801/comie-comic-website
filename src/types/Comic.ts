@@ -1,4 +1,4 @@
-export interface Comic {
+export default interface Comic {
   id: string,
   title: string,
   imageSrc: string,

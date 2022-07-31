@@ -1,5 +1,5 @@
 import { parse } from 'node-html-parser';
-import { Comic } from '../../types/Comic';
+import Comic from '../../types/Comic';
 import axios from '../axios';
 
 const getComic = async (id: string): Promise<any> => {

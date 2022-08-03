@@ -2,10 +2,12 @@ import {
     AspectRatio,
     Box,
     Button,
+    Center,
     Heading,
     HStack,
     Image,
     LinkOverlay,
+    Spinner,
     Table,
     TableContainer,
     Tbody,
@@ -16,18 +18,32 @@ import {
     Tr,
     VStack,
 } from "@chakra-ui/react";
+import axios from "axios";
 import { GetServerSideProps, NextPage } from "next";
 import Link from "next/link";
-import { BookOpen, ThumbsUp } from "phosphor-react";
+import { BookOpen, Plus, ThumbsUp } from "phosphor-react";
+import { useState } from "react";
 import Layout from "../../../components/Layout";
 import Comic from "../../../types/Comic";
-import { getComic } from "../../../utils/api/comic";
+import { getComic, getMoreChapterComic } from "../../../utils/api/comic";
 
 interface ComicProps {
     comic: Comic;
 }
 
 const Comic: NextPage<ComicProps> = ({ comic }) => {
+    const [chapters, setChapters] = useState(comic.chapters.slice(0, 20));
+    const [isLoadingChapters, setIsLoadingChapters] = useState(false);
+
+    const onSeeMore = () => {
+        console.log("get more chapters");
+        setIsLoadingChapters(true);
+
+        setTimeout(() => {
+            setChapters(comic.chapters);
+            setIsLoadingChapters(false);
+        }, 0);
+    };
     return (
         <Layout>
             <VStack align="flex-start" spacing={12}>
@@ -56,11 +72,11 @@ const Comic: NextPage<ComicProps> = ({ comic }) => {
                             <HStack spacing={3}>
                                 <HStack spacing={1}>
                                     <BookOpen />
-                                    <Text>100k</Text>
+                                    <Text>{comic.views}</Text>
                                 </HStack>
                                 <HStack spacing={1}>
                                     <ThumbsUp />
-                                    <Text>100</Text>
+                                    <Text>{comic.likes}</Text>
                                 </HStack>
                                 {/* <Text>100k luot</Text>
                             <Text>100 chuong</Text> */}
@@ -95,7 +111,7 @@ const Comic: NextPage<ComicProps> = ({ comic }) => {
                     <Heading as="h2" size="lg">
                         Danh sách chương
                     </Heading>
-                    <TableContainer w="full" maxH={"100vh"} overflowY="auto">
+                    <TableContainer w="full">
                         <Table variant="simple">
                             <Thead>
                                 <Tr>
@@ -104,7 +120,7 @@ const Comic: NextPage<ComicProps> = ({ comic }) => {
                                 </Tr>
                             </Thead>
                             <Tbody>
-                                {comic.chapters.map((chap, i) => (
+                                {chapters.map((chap, i) => (
                                     <Tr
                                         key={i}
                                         cursor="pointer"
@@ -126,6 +142,22 @@ const Comic: NextPage<ComicProps> = ({ comic }) => {
                             </Tbody>
                         </Table>
                     </TableContainer>
+                    {/* <HStack w="full" justify={"center"} bg="gray.700" py={4}>
+                        <Plus />
+                        <Text>Xem thêm</Text>
+                    </HStack> */}
+                    <HStack justify={"center"} w="full">
+                        {isLoadingChapters && <Spinner />}
+                        {chapters.length < comic.chapters.length &&
+                            !isLoadingChapters && (
+                                <Button w="full" onClick={onSeeMore}>
+                                    <HStack>
+                                        <Plus />
+                                        <Text>Xem thêm</Text>
+                                    </HStack>
+                                </Button>
+                            )}
+                    </HStack>
                 </VStack>
             </VStack>
         </Layout>
